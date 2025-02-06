@@ -70,8 +70,8 @@
         <label for="inputValue">Input (MVA)</label>
         <input type="number" id="inputValue" placeholder="Enter Value" oninput="calculatePercentage()">
         
-        <label for="denominator">Total (250 MVA)</label>
-        <input type="number" id="denominator" value="250" disabled>
+        <label for="denominator">Total (1093 MVA)</label>
+        <input type="number" id="denominator" value="1093" disabled>
         
         <label for="result">Percentage</label>
         <input type="number" id="result" placeholder="Result" disabled>
@@ -80,7 +80,7 @@
     <script>
         function calculatePercentage() {
             let inputValue = document.getElementById('inputValue').value;
-            let denominator = 800;
+            let denominator = 1093;
             let result = ((inputValue * 100) / denominator).toFixed(2);
             
             document.getElementById('result').value = isNaN(result) ? '' : result;
