@@ -79,7 +79,7 @@
                 oninput="calculate()">
 
             <label for="weather">Weather</label>
-            <select id="weather">
+            <select id="weather" style="width: 100%;">
                 <option value="Clear" selected>Clear</option>
                 <option value="Rainy">Rainy</option>
                 <option value="Cloudy">Cloudy</option>
@@ -133,7 +133,11 @@
                 `Weather:  ${weather}`;
 
             navigator.clipboard.writeText(message).then(() => {
-                alert("Message copied to clipboard!");
+                let button = document.querySelector('.calculator button');
+                button.textContent = "Copied!";
+                setTimeout(() => {
+                    button.textContent = "Copy";
+                }, 2000);
             });
         }
     </script>
