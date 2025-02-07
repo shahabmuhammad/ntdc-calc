@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Percentage Calculator</title>
-    <style>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Percentage Calculator</title>
+        <style>
         body {
             font-family: Arial, sans-serif;
             display: flex;
@@ -21,18 +21,17 @@
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
             text-align: center;
             width: 90%;
-            max-width: 350px;
-            margin: 0px 2px;
+            max-width: 400px;
         }
         .calculator label {
             display: block;
             text-align: left;
             margin-top: 10px;
         }
-        .calculator label[for="result"] {
+        .calculator label[for="weather"] {
             font-weight: bold;
         }
-        .calculator input {
+        .calculator input, .calculator select {
             width: calc(100% - 20px);
             padding: 10px;
             margin: 5px 0;
@@ -55,36 +54,88 @@
         .calculator button:hover {
             background: #0056b3;
         }
-        @media (max-width: 600px) {
+                @media (max-width: 600px) {
             body {
                 align-items: flex-start;
                 padding-top: 20px;
             }
         }
     </style>
-</head>
-<body>
-    <div class="calculator">
-        <h3 style="margin:0px; margin-bottom:2px;">Percentage Calculator</h3>
-        <p style="margin:0px; padding:0px;">Auto Transformers</p>
-        <label for="inputValue">Input (MVA)</label>
-        <input type="number" id="inputValue" placeholder="Enter Value" oninput="calculatePercentage()">
-        
-        <label for="denominator">Total (1093 MVA)</label>
-        <input type="number" id="denominator" value="1093" disabled>
-        
-        <label for="result">Percentage</label>
-        <input type="number" id="result" placeholder="Result" disabled>
-    </div>
+    </head>
+    <body>
+        <div class="calculator">
+            <h2>Percentage Calculator</h2>
 
-    <script>
-        function calculatePercentage() {
-            let inputValue = document.getElementById('inputValue').value;
-            let denominator = 1093;
-            let result = ((inputValue * 100) / denominator).toFixed(2);
+            <label for="transformer">250MVA Transformer Input</label>
+            <input type="number" id="transformer" placeholder="Enter Value"
+                oninput="calculate()">
+
+            <label for="tarbela">Tarbela - Mardan I & II</label>
+            <input type="number" id="tarbela" placeholder="Enter Value"
+                oninput="calculate()">
+
+            <label for="nowshera">Nowshera - MDN & Mardan - Chakdara</label>
+            <input type="number" id="nowshera" placeholder="Enter Value"
+                oninput="calculate()">
+
+            <label for="weather">Weather</label>
+            <select id="weather">
+                <option value="Clear" selected>Clear</option>
+                <option value="Rainy">Rainy</option>
+                <option value="Cloudy">Cloudy</option>
+                <option value="Stormy">Stormy</option>
+            </select>
+
+            <button onclick="copyToClipboard()">Copy</button>
+        </div>
+
+        <script>
+        function calculate() {
+            let transformer = document.getElementById('transformer').value;
+            let tarbela = document.getElementById('tarbela').value;
+            let nowshera = document.getElementById('nowshera').value;
             
-            document.getElementById('result').value = isNaN(result) ? '' : result;
+            let transformerPercentage = ((transformer * 100) / 1093).toFixed(1);
+            let tarbelaPercentage = ((tarbela * 100) / 800).toFixed(1);
+            let nowsheraPercentage = ((nowshera * 100) / 1200).toFixed(1);
+            
+            document.getElementById('transformer').setAttribute('data-percentage', transformerPercentage);
+            document.getElementById('tarbela').setAttribute('data-percentage', tarbelaPercentage);
+            document.getElementById('nowshera').setAttribute('data-percentage', nowsheraPercentage);
+        }
+
+        function copyToClipboard() {
+            let transformer = document.getElementById('transformer').value;
+            let tarbela = document.getElementById('tarbela').value;
+            let nowshera = document.getElementById('nowshera').value;
+            let weather = document.getElementById('weather').value;
+
+            let transformerPercentage = document.getElementById('transformer').getAttribute('data-percentage') || "0";
+            let tarbelaPercentage = document.getElementById('tarbela').getAttribute('data-percentage') || "0";
+            let nowsheraPercentage = document.getElementById('nowshera').getAttribute('data-percentage') || "0";
+            
+            let now = new Date();
+            let time = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
+            let date = now.toISOString().split('T')[0];
+            
+            let message = `Loading Position 220kV G/S NTDCL *Mardan*\n` +
+                `Time: ${time} Hrs.\n` +
+                `Dated: ${date}\n\n` +
+                `Auto Transformers:\n` +
+                `250MVA T-1= ${transformer}A (${transformerPercentage}%)\n\n` +
+                `220kV T/Lines:\n` +
+                `Tarbela -Mardan l=${tarbela}A (${tarbelaPercentage}%)\n` +
+                `Tarbela- Mardan II=${tarbela}A (${tarbelaPercentage}%)\n` +
+                `Nowshera- MDN=${nowshera}A (${nowsheraPercentage}%)\n` +
+                `Mardan-Chakdara=${nowshera}A (${nowsheraPercentage}%)\n\n` +
+                `220kV Voltage:  220KV\n` +
+                `132 kV Voltage:  132KV\n\n` +
+                `Weather:  ${weather}`;
+
+            navigator.clipboard.writeText(message).then(() => {
+                alert("Message copied to clipboard!");
+            });
         }
     </script>
-</body>
+    </body>
 </html>
