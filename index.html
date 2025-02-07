@@ -54,7 +54,7 @@
         .calculator button:hover {
             background: #0056b3;
         }
-                @media (max-width: 600px) {
+        @media (max-width: 600px) {
             body {
                 align-items: flex-start;
                 padding-top: 20px;
@@ -74,9 +74,23 @@
             <input type="number" id="tarbela" placeholder="Enter Value"
                 oninput="calculate()">
 
-            <label for="nowshera">Nowshera - MDN & Mardan - Chakdara</label>
+            <label for="nowshera">Nowshera - MDN</label>
             <input type="number" id="nowshera" placeholder="Enter Value"
                 oninput="calculate()">
+
+            <label for="chakdara">Mardan - Chakdara</label>
+            <input type="number" id="chakdara" placeholder="Enter Value"
+                oninput="calculate()">
+                <div style="display: flex; justify-content: space-between;">
+                    <div style="flex: 1; margin-right: 10px;">
+                        <label for="voltage220">220kV Voltage</label>
+                        <input type="number" id="voltage220" placeholder="Enter Value" value="220">
+                    </div>
+                    <div style="flex: 1;">
+                        <label for="voltage132">132kV Voltage</label>
+                        <input type="number" id="voltage132" placeholder="Enter Value" value="132">
+                    </div>
+                </div>
 
             <label for="weather">Weather</label>
             <select id="weather" style="width: 100%;">
@@ -94,29 +108,36 @@
             let transformer = document.getElementById('transformer').value;
             let tarbela = document.getElementById('tarbela').value;
             let nowshera = document.getElementById('nowshera').value;
+            let chakdara = document.getElementById('chakdara').value;
             
             let transformerPercentage = ((transformer * 100) / 1093).toFixed(1);
             let tarbelaPercentage = ((tarbela * 100) / 800).toFixed(1);
             let nowsheraPercentage = ((nowshera * 100) / 1200).toFixed(1);
+            let chakdaraPercentage = ((chakdara * 100) / 1200).toFixed(1);
             
             document.getElementById('transformer').setAttribute('data-percentage', transformerPercentage);
             document.getElementById('tarbela').setAttribute('data-percentage', tarbelaPercentage);
             document.getElementById('nowshera').setAttribute('data-percentage', nowsheraPercentage);
+            document.getElementById('chakdara').setAttribute('data-percentage', chakdaraPercentage);
         }
 
         function copyToClipboard() {
             let transformer = document.getElementById('transformer').value;
             let tarbela = document.getElementById('tarbela').value;
             let nowshera = document.getElementById('nowshera').value;
+            let chakdara = document.getElementById('chakdara').value;
+            let voltage220 = document.getElementById('voltage220').value;
+            let voltage132 = document.getElementById('voltage132').value;
             let weather = document.getElementById('weather').value;
 
             let transformerPercentage = document.getElementById('transformer').getAttribute('data-percentage') || "0";
             let tarbelaPercentage = document.getElementById('tarbela').getAttribute('data-percentage') || "0";
             let nowsheraPercentage = document.getElementById('nowshera').getAttribute('data-percentage') || "0";
+            let chakdaraPercentage = document.getElementById('chakdara').getAttribute('data-percentage') || "0";
             
             let now = new Date();
             let time = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
-            let date = now.toISOString().split('T')[0];
+            let date = now.getDate().toString().padStart(2, '0') + "-" + (now.getMonth() + 1).toString().padStart(2, '0') + "-" + now.getFullYear();
             
             let message = `Loading Position 220kV G/S NTDCL *Mardan*\n` +
                 `Time: ${time} Hrs.\n` +
@@ -127,9 +148,9 @@
                 `Tarbela -Mardan l=${tarbela}A (${tarbelaPercentage}%)\n` +
                 `Tarbela- Mardan II=${tarbela}A (${tarbelaPercentage}%)\n` +
                 `Nowshera- MDN=${nowshera}A (${nowsheraPercentage}%)\n` +
-                `Mardan-Chakdara=${nowshera}A (${nowsheraPercentage}%)\n\n` +
-                `220kV Voltage:  220KV\n` +
-                `132 kV Voltage:  132KV\n\n` +
+                `Mardan-Chakdara=${chakdara}A (${chakdaraPercentage}%)\n\n` +
+                `220kV Voltage:  ${voltage220}KV\n` +
+                `132 kV Voltage:  ${voltage132}KV\n\n` +
                 `Weather:  ${weather}`;
 
             navigator.clipboard.writeText(message).then(() => {
