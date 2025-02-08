@@ -54,6 +54,11 @@
         .calculator button:hover {
             background: #0056b3;
         }
+        .footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #555;
+        }
         @media (max-width: 600px) {
             body {
                 align-items: flex-start;
@@ -101,6 +106,7 @@
             </select>
 
             <button onclick="copyToClipboard()">Copy</button>
+            <div class="footer">Made by <b>Anwar Shah</b> SSOII 220 KV Grid Mardan</div>
         </div>
 
         <script>
@@ -144,6 +150,8 @@
                 `Dated: ${date}\n\n` +
                 `Auto Transformers:\n` +
                 `250MVA T-1= ${transformer}A (${transformerPercentage}%)\n\n` +
+                `250MVA T-2= ${transformer}A (${transformerPercentage}%)\n\n` +
+                `250MVA T-3= ${transformer}A (${transformerPercentage}%)\n\n` +
                 `220kV T/Lines:\n` +
                 `Tarbela -Mardan l=${tarbela}A (${tarbelaPercentage}%)\n` +
                 `Tarbela- Mardan II=${tarbela}A (${tarbelaPercentage}%)\n` +
